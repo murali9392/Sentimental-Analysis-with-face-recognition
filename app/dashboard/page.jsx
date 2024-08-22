@@ -1,6 +1,7 @@
 "use client";
 import { useRef, useEffect } from "react";
 import * as faceapi from "face-api.js";
+import './App.css';
 
 const Dashboard = () => {
   const videoRef = useRef();
@@ -43,24 +44,25 @@ const Dashboard = () => {
           .withFaceLandmarks()
           .withFaceExpressions();
 
-        // Clear previous drawings
-        const canvas = faceapi.createCanvasFromMedia(videoRef.current);
+        // Clear the canvas before drawing
+        const canvas = canvasRef.current;
+        const context = canvas.getContext("2d");
+        context.clearRect(0, 0, canvas.width, canvas.height);
+
+        // Resize canvas to match video size
         faceapi.matchDimensions(canvas, {
-          width: 940,
-          height: 650,
+          width: videoRef.current.videoWidth,
+          height: videoRef.current.videoHeight,
         });
 
         const resizedDetections = faceapi.resizeResults(detections, {
-          width: 940,
-          height: 650,
+          width: videoRef.current.videoWidth,
+          height: videoRef.current.videoHeight,
         });
 
-        // Clear the canvas before drawing
-        canvasRef.current.getContext("2d").clearRect(0, 0, canvasRef.current.width, canvasRef.current.height);
-
-        faceapi.draw.drawDetections(canvasRef.current, resizedDetections);
-        faceapi.draw.drawFaceLandmarks(canvasRef.current, resizedDetections);
-        faceapi.draw.drawFaceExpressions(canvasRef.current, resizedDetections);
+        faceapi.draw.drawDetections(canvas, resizedDetections);
+        faceapi.draw.drawFaceLandmarks(canvas, resizedDetections);
+        faceapi.draw.drawFaceExpressions(canvas, resizedDetections);
       }
     }, 1000);
   };
