@@ -5,11 +5,11 @@ const Header = async ({ username }) => {
   const { userId } = auth();
 
   return (
-    <nav className='flex items-center justify-between px-6 py-4 mb-5 bg-blue-700'>
+    <nav className='flex items-center justify-between px-6 py-4  bg-blue-700'>
       <div className='flex items-center'>
         <Link href='/'>
           <div className='text-lg font-bold text-white uppercase'>
-            Clerk App
+            Moodlense
           </div>
         </Link>
       </div>
